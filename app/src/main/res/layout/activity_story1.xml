@@ -6,10 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ECE5DD"
-    tools:context="com.theboringman.beafraid.MainActivity">
+    tools:context="com.theboringman.beafraid.Story1Activity">
 
     <RelativeLayout
-        android:id="@+id/toolbar"
+        android:id="@+id/conversation_toolbar"
         android:layout_width="match_parent"
         android:layout_height="52dp"
         android:orientation="horizontal"
@@ -21,18 +21,21 @@
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
         >
-        <ImageView
+        <ImageButton
             android:id="@+id/back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
+            android:background="@color/colorPrimary"
             android:layout_alignParentStart="true"
-            android:layout_marginBottom="6dp"
+            android:paddingBottom="8dp"
+            android:paddingTop="8dp"
+            android:onClick="goToChatsScreen"
             android:src="@drawable/back"/>
         <ImageView
             android:id="@+id/profilePic"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="2dp"
             android:layout_toEndOf="@id/back"
             android:layout_width="42dp"
             android:layout_centerVertical="true"
@@ -69,6 +72,8 @@
             android:layout_marginStart="10dp"
             android:layout_width="wrap_content"
             android:layout_centerVertical="true"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:src="@drawable/more"/>
@@ -78,11 +83,17 @@
             android:layout_width="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toStartOf="@id/more"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             android:layout_height="match_parent"
+            android:rotation="320"
             android:src="@drawable/attach"/>
         <ImageView
             android:layout_marginStart="8dp"
             android:layout_width="wrap_content"
+            android:rotation="355"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             android:layout_height="match_parent"
             android:layout_toStartOf="@id/attach"
             android:layout_centerVertical="true"
@@ -90,7 +101,7 @@
     </RelativeLayout>
 
         <ListView
-            android:layout_below="@id/toolbar"
+            android:layout_below="@id/conversation_toolbar"
             android:id="@+id/msgview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -110,24 +121,22 @@
         android:paddingStart="8dp">
         <EditText
             android:id="@+id/msg"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_gravity="center_vertical"
             android:layout_weight="0.95"
             android:background="@drawable/rounded_corners"
             android:elevation="2dp"
             android:foregroundTint="@color/colorPrimary"
-            android:hint="Type a message"
-            android:maxHeight="72dp"
+            android:hint="@string/click_to_compose"
             android:paddingEnd="16dp"
             android:focusableInTouchMode="false"
-            android:cursorVisible="true"
             android:paddingStart="16dp"
             android:textSize="18sp"/>
         <ImageButton
             android:id="@+id/send"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
             android:layout_marginStart="8dp"
             android:layout_weight="0.05"
             android:layout_gravity="center_vertical"
