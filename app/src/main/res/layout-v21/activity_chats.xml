@@ -13,13 +13,14 @@
         android:layout_height="56dp"
         android:layout_margin="0dp"
         android:background="@color/colorPrimary"
-        android:padding="0dp">
+        android:padding="0dp"
+        android:elevation="4dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingRight="16dp"
-            android:paddingLeft="0dp">
+            android:paddingEnd="16dp"
+            android:paddingStart="0dp">
 
             <TextView
                 android:id="@+id/chats_playerName"
@@ -39,8 +40,8 @@
                 android:paddingBottom="20dp"
                 android:paddingStart="8dp"
                 android:paddingEnd="8dp"
-                android:layout_alignParentRight="true"
-                android:layout_marginLeft="16dp"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="16dp"
                 android:background="@color/colorPrimary"
                 android:layout_centerVertical="true"
                 android:onClick="goToSettings"
@@ -63,8 +64,8 @@
             android:layout_width="45dp"
             android:layout_height="45dp"
             android:src="@drawable/user"
-            android:layout_alignParentLeft="true"
-            android:layout_marginRight="16dp"/>
+            android:layout_alignParentStart="true"
+            android:layout_marginEnd="16dp"/>
         <TextView
             android:id="@+id/chats_chat1"
             android:layout_width="wrap_content"
@@ -73,25 +74,25 @@
             android:textSize="20sp"
             android:layout_alignParentTop="true"
             android:textColor="#000000"
-            android:layout_toRightOf="@id/chats_pic1"/>
+            android:layout_toEndOf="@id/chats_pic1"/>
         <TextView
             android:id="@+id/chats_message1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Tap to Chat"
-            android:layout_marginLeft="2dp"
+            android:layout_marginStart="2dp"
             android:textSize="14sp"
-            android:layout_toRightOf="@id/chats_pic1"
+            android:layout_toEndOf="@id/chats_pic1"
             android:layout_below="@id/chats_chat1"/>
         <TextView
             android:id="@+id/chats_time1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="12:15"
-            android:layout_marginLeft="2dp"
+            android:layout_marginStart="2dp"
             android:textSize="15sp"
             android:textColor="#000000"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"/>
     </RelativeLayout>
 </RelativeLayout>

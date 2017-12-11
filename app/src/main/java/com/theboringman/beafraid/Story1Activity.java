@@ -16,36 +16,74 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.Random;
 
 public class Story1Activity extends AppCompatActivity{
     private static final String TAG = "ChatActivity";
 
     private ChatArrayAdapter chatArrayAdapter;
+    private String playerName;
+    private long mDelay;
+    private int mIndex;
+    private CharSequence mText;
+    private SharedPreferences sharedPreferencesUser;
+    private SharedPreferences sharedPreferencesGame;
+    private int playerCount = 0;
+    private int botCount = 0;
+    private Random random;
+    private int chapter = 1;
+    //Messages
+    private String[][] playerMessages; //current player message array
+    private String[][] botMessages; //current bot message array
+    private String[][] playerCh1;
+    private String[][] botCh1;
+    private String[][] playerCh2;
+    private String[][] botCh2;
+    private String[][] playerCh3;
+    private String[][] botCh3;
+    //Views
     private ListView listView;
     private EditText chatText;
     private TextView activityState;
     private TextView Name;
     private ImageButton buttonSend;
-    private String playerName;
+    //Booleans
+    private boolean nextPlayer = false;
+    private boolean nextBot = false;
     private boolean left = true;
     private boolean right = false;
-    private long mDelay;
-    private int mIndex;
-    private CharSequence mText;
+    private boolean isPlayer = true;
+    //Media
     private MediaPlayer keypress;
     private MediaPlayer receivedMessage;
     private MediaPlayer sentMessage;
-    private SharedPreferences sharedPreferences;
-    private boolean isPlayer = true;
-    private int playerCount = 0;
-    private int botCount = 0;
-    private boolean nextPlayer = false;
-    private boolean nextBot = false;
-    private Random random;
-    private String[][] playerMessages;
-    private String[][] botMessages;
-
+    //Emojis
+    String grinWithSmilingEyes;
+    String cryLaughter;
+    String smileOpenMouth;
+    String smileOpenMouthSmilingEyes;
+    String smileWithColdSweat;
+    String smileTightClosedEys;
+    String winkFace;
+    String smile;
+    String smileTongueOut;
+    String relieveFace;
+    String smileHeartEyes;
+    String smirkFace;
+    String unamusedFace;
+    String tensedFace;
+    String pensiveFace;
+    String confoundedFace;
+    String kissThrow;
+    String kissFace;
+    String getPrankedFace;
+    String teaseFace;
+    String dissapointedFace;
+    String angryFace;
+    String redAngryFace;
+    String cryingFace;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -53,9 +91,13 @@ public class Story1Activity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_story1);
 
-        sharedPreferences = getSharedPreferences("userInfo",MODE_PRIVATE);
-        playerName = sharedPreferences.getString("firstName","");
+        sharedPreferencesUser = getSharedPreferences("userInfo",MODE_PRIVATE);
+        sharedPreferencesGame = getSharedPreferences("gameInfo",MODE_PRIVATE);
+
+        playerName = sharedPreferencesUser.getString("firstName","");
+        loadEmojis();
         loadMessages();
+        setChapterMessages();
 
         buttonSend = findViewById(R.id.send);
         Name = findViewById(R.id.name);
@@ -87,14 +129,20 @@ public class Story1Activity extends AppCompatActivity{
         buttonSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                if(playerCount <playerMessages.length && chatText.getText().toString().equals
-                        (playerMessages[playerCount][0]) ) {
+                if(playerCount < playerMessages.length && chatText.getText().toString().equals(playerMessages[playerCount][0]) ) {
                     playerMessageSend();
-                    if(botCount <botMessages.length) {     //Receive Message if available
-                        botMessageSend();
-                    }
                 }
-                }});
+                if(!isPlayer && botCount < botMessages.length) {     //Receive Message if available
+                        botMessageReceive();
+                }
+                if((playerCount < playerMessages.length && playerMessages[playerCount][1].contains("end")) || (botCount < botMessages.length && botMessages[botCount][1].contains("end"))){
+                        chapter++;
+                        sharedPreferencesGame.edit().putInt("chap",chapter).apply();
+                        playerCount = 0;
+                        botCount = 0;
+                        setChapterMessages();
+                }
+            }});
 
         listView.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
         listView.setAdapter(chatArrayAdapter);
@@ -147,7 +195,7 @@ public class Story1Activity extends AppCompatActivity{
                 checkForNextBot();
                 if(nextBot) {
                     botCount++;
-                    botMessageSend();
+                    botMessageReceive();
                 }
                 else{
                     chatText.setHint("Click to compose");
@@ -179,19 +227,14 @@ public class Story1Activity extends AppCompatActivity{
     private boolean receiveChatMessage() {
         if(botCount <botMessages.length) {       //check if messages are available.
             chatArrayAdapter.add(new ChatMessage(left, botMessages[botCount][0]));
-
-            Log.i(TAG,botMessages[botCount][1]);
             receivedMessage.start();
         }
         return true;
     }
 
-
     public void checkForNextPlayer(){
         if(playerCount<playerMessages.length && playerMessages[playerCount][1].contains("next")){
-            playerCount++;
             nextPlayer = true;
-            isPlayer = true;
         }
         else {
         nextPlayer = false;
@@ -210,33 +253,31 @@ public class Story1Activity extends AppCompatActivity{
     }
 
     public void playerMessageSend(){
+        sendChatMessage();
+        checkForNextPlayer();
+        playerCount++;
+        if(!nextPlayer){
             isPlayer = false;
-            sendChatMessage();
-            //checkForNextPlayer();
-           // if(nextPlayer){
-            //    playerMessageSend();
-           // }
-            playerCount++;
+        }
     }
-    public void botMessageSend(){
-            chatText.setHint("Wait for reply");
+    public void botMessageReceive(){
+            chatText.setHint("Wait for reply....");
             waitForTyping();
             waitForText();
     }
 
     public void loadMessages(){
-       playerMessages = new String[][]{
-                {"Hey Selina!",""},
+       playerCh1 = new String[][]{
+                {"Hey Selina "+smile,""},
                 {"I was just wondering if you could explain this app to me....",""},
                 {"Thanks, I knew I could count on you.",""},
                 {"Wow, that sounds so cool!",""},
-                {"He's probably having a drink, regreting the fact he killed people in his last " +
-                        "adventure.",""},
+                {"He's probably having a drink, regretting the fact he killed people in his last adventure.",""},
                 {"See ya",""}
         };
-        botMessages = new String[][] {
+        botCh1 = new String[][] {
                 {"Heyyy what up "+playerName+"??",""},
-                {"Oh yeah sure I can!",""},
+                {"Oh yeah sure I can " +smileOpenMouth,""},
                 {"It's no problem.","next"},
                 {"So Nitish's new app is going to be an Interactive Fiction and the story in it will " +
                         "be of the Horror genre.","next"},
@@ -244,12 +285,67 @@ public class Story1Activity extends AppCompatActivity{
                         "character whose replies will be automated.","next"},
                 {"You will have the freedom to choose your replies during certain key events of the " +
                         "which will change the outcome of the story.","next"},
-                {"Your choices will have consequences. \nThe fate of the other character is in your " +
-                        "hands.",""},
-                {"Ikr! Nitish is a genius.","next"},
+                {"Your choices will have consequences. \nThe fate of the other character is in your hands.",""},
+                {"Ikr! Nitish is a genius "+smileHeartEyes,"next"},
                 {"Anyways, I gotta go save Gotham now.....Where's Wayne when you need him right?",""},
-                {"Haha yeah..... \nSee ya later",""}
+                {cryLaughter+cryLaughter+"\nYeah.....","next"},
+                {"See ya later",""}
         };
+        playerCh2 = new String[][]{};
+        botCh2 = new String[][]{};
+        playerCh3 = new String[][]{};
+        botCh3 = new String[][]{};
+    }
+    public void setChapterMessages(){
+        chapter = sharedPreferencesGame.getInt("chap",1);
+        switch(chapter){
+            case 1:
+                playerMessages = playerCh1;
+                botMessages = botCh1;
+                break;
+            case 2:
+                playerMessages = playerCh2;
+                botMessages = botCh2;
+                break;
+            case 3:
+                playerMessages = playerCh3;
+                botMessages = botCh3;
+                break;
+            default:
+                playerMessages = playerCh1;
+                botMessages = botCh1;
+                Toast.makeText(this,"Some error occurred.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public String getEmojiByUnicode(int unicode){
+        return new String(Character.toChars(unicode));
+    }
+    public void loadEmojis(){
+        grinWithSmilingEyes = getEmojiByUnicode(0x1F601);
+        cryLaughter = getEmojiByUnicode(0x1F602);
+        smileOpenMouth = getEmojiByUnicode(0x1F603);
+        smileOpenMouthSmilingEyes = getEmojiByUnicode(0x1F604);
+        smileWithColdSweat = getEmojiByUnicode(0x1F605);
+        smileTightClosedEys = getEmojiByUnicode(0x1F606);
+        winkFace = getEmojiByUnicode(0x1F609);
+        smile = getEmojiByUnicode(0x1F60A);
+        smileTongueOut = getEmojiByUnicode(0x1F60B);
+        relieveFace = getEmojiByUnicode(0x1F60C);
+        smileHeartEyes = getEmojiByUnicode(0x1F60D);
+        smirkFace = getEmojiByUnicode(0x1F60F);
+        unamusedFace = getEmojiByUnicode(0x1F612);
+        tensedFace = getEmojiByUnicode(0x1F613);
+        pensiveFace = getEmojiByUnicode(0x1F614);
+        confoundedFace = getEmojiByUnicode(0x1F616);
+        kissThrow = getEmojiByUnicode(0x1F618);
+        kissFace = getEmojiByUnicode(0x1F61A);
+        getPrankedFace = getEmojiByUnicode(0x1F61C);  //Stuck out tongue and winking eye
+        teaseFace = getEmojiByUnicode(0x1F61D); //Stuck out tongue with tightly closed eyes
+        dissapointedFace = getEmojiByUnicode(0x1F61E);
+        angryFace = getEmojiByUnicode(0x1F620);
+        redAngryFace = getEmojiByUnicode(0x1F621);
+        cryingFace = getEmojiByUnicode(0x1F622);
     }
 
     //Buttons Methods

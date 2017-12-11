@@ -13,7 +13,9 @@
             android:name=".Story1Activity"
             android:windowSoftInputMode="adjustResize|stateHidden">
         </activity>
-        <activity android:name=".ChatsActivity">
+        <activity
+            android:name=".ChatsActivity"
+            android:windowSoftInputMode="adjustResize|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -21,6 +23,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".SettingsActivity">
+        </activity>
+        <activity android:name=".BotProfile">
         </activity>
     </application>
 

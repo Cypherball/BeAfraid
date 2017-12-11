@@ -14,17 +14,17 @@ public class SettingsActivity extends AppCompatActivity {
     private String Name;
     private ImageView profilePic;
     private TextView nameHolder;
-    private SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferencesUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        sharedPreferences = getSharedPreferences("userInfo",MODE_PRIVATE);
+        sharedPreferencesUser = getSharedPreferences("userInfo",MODE_PRIVATE);
 
-        isMale = sharedPreferences.getBoolean("gender",true);
-        Name = sharedPreferences.getString("fullName","Error");
+        isMale = sharedPreferencesUser.getBoolean("gender",true);
+        Name = sharedPreferencesUser.getString("fullName","Error");
 
         profilePic = findViewById(R.id.settings_profilePic);
         if(isMale){

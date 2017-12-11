@@ -12,12 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:background="@color/colorPrimary"
+        android:elevation="4dp"
         >
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingLeft="0dp"
-            android:paddingRight="16dp">
+            android:paddingStart="0dp"
+            android:paddingEnd="16dp">
             <ImageButton
                 android:id="@+id/settings_back"
                 android:layout_width="wrap_content"
@@ -27,7 +28,7 @@
                 android:src="@drawable/back"
                 android:onClick="goBack"
                 android:layout_centerVertical="true"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:background="@color/colorPrimary"/>
             <TextView
                 android:id="@+id/settings_heading"
@@ -35,12 +36,12 @@
                 android:layout_height="match_parent"
                 android:text="@string/settings"
                 android:layout_centerVertical="true"
-                android:layout_toRightOf="@id/settings_back"
+                android:layout_toEndOf="@id/settings_back"
                 android:gravity="center_vertical"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 android:textColor="#FFFFFF"
-                android:layout_marginLeft="32dp"/>
+                android:layout_marginStart="32dp"/>
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
@@ -60,7 +61,7 @@
             android:layout_height="64dp"
             android:src="@drawable/player"/>
         <LinearLayout
-            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
